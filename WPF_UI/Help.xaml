@@ -1,0 +1,39 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_UI"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="WPF_UI.Help"
+        mc:Ignorable="d"
+        Title="Help" Height="450" Width="800">
+    <Grid Margin="0,0,-0.154,-0.077">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70*"/>
+            <RowDefinition Height="137*"/>
+            <RowDefinition Height="213*"/>
+        </Grid.RowDefinitions>
+
+        <Border
+            Background="#FFB9EAF0" Margin="10,10,10,10.154">
+            <StackPanel Orientation="Horizontal" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center" 
+                Margin="0 0 0 0">
+                <Label Content="Информация" Width="615"/>
+            </StackPanel>
+        </Border>
+        <Label Content="Участники проекта&#xD;&#xA;Командир бригады: Пчелкина Алиса.&#xD;&#xA;Бригада геометрии: Мироненко Полина, Койнова Анжелика, Шелковникова Валентина&#xD;&#xA;Бригада user interface: Иванов Максим, Мироненко Сергей, Тимофеев Валерий&#xD;&#xA;Бригада model: Бурдуков Вадим, Исакова Ирина, Голубева Анна&#xD;&#xA;Бригада формата данных: Юрьева Яна, Дубова Света, Аникина Полина, Баштавой Павел " Margin="21,9.846,29,23.508" Grid.Row="1"/>
+        <Label Content="Проделанная работа&#xA;Графический редактор позволяет отрисовывать фигуры в векторной графике. &#xA;В выпадающем окне есть возможность выбора базовых фигур - линия, эллипс, прямоугольник, треугольник. &#xA;Пользователю предоставляется возможность выбора способа рисования фигуры - контурного или с заливкой.&#xA;Пользователь может выбрать цвет границы для контурной фигуры или цвет заливки из предложенной палитры цветов или сгенерировать&#xA;необходимый цвет самостоятельно на цветовом спектре.&#xD;&#xA;Пользователь может выбрать толщину контура из предложенных вариантов.&#xA;Пользователь может воспользоваться командами &quot;Отмена действия&quot; и &quot;Возврат отмененного действия&quot;, выбрав соответствующую команду в&#xA;меню.&#xA;Пользователю предоставляется возможность открыть файл или сохранить созданный файл в в одном из предложенных форматах" Margin="21,0.492,29,24.923" RenderTransformOrigin="0.542,0.357" Grid.Row="2">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.141"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+
+    </Grid>
+</Window>

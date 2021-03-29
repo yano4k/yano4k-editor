@@ -1,0 +1,203 @@
+﻿<Window x:Class="WPF_UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_UI"
+        mc:Ignorable="d"
+        Title="Не фотошоп, конечно, но пользоваться можно." Height="450" Width="800"
+        
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:wpf="clr-namespace:SharpGL.WPF;assembly=SharpGL.WPF" MinWidth="800" MinHeight="450">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="198*"/>
+            <ColumnDefinition Width="99*"/>
+            <ColumnDefinition Width="325*"/>
+            <ColumnDefinition Width="170*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="11*"/>
+        </Grid.RowDefinitions>
+
+        <!--Меню-->
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
+            <MenuItem Header="_File">
+                <MenuItem x:Name="menuOpen" Header="_Open" Click="menuOpen_Click"/>
+                <MenuItem x:Name="menuSaveAs" Header="_SaveAs" Click="menuSaveAs_Click"/>
+                <MenuItem Header="_Exit" Click="MenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem x:Name="menuUndo" Header="_Undo" Click="menuUndo_Click"/>
+                <MenuItem x:Name="menuRedo" Header="_Redo" Click="menuRedo_Click"/>
+                
+            </MenuItem>
+            <MenuItem Header="_Help" Click="MenuItem_Click_1">
+                <MenuItem Header="_About"/>
+            </MenuItem>
+        </Menu>
+
+        <!--Инструменты-->
+        <Border Grid.Column="0"
+                Grid.Row="1"
+                Grid.RowSpan="1"
+                Background="#FFB9EAF0">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center">
+                <TextBlock VerticalAlignment="Center"
+                           Margin="0 0 20 0">
+                    Инструмент
+                </TextBlock>
+                <ComboBox x:Name="tool" 
+                          SelectionChanged="toolChange"
+                          Width="55" SelectedIndex="4">
+                    <ComboBoxItem Name="Line">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="images/diagonal-line.png" Width="22" Margin="0 0 5 0"/>
+                            <TextBlock VerticalAlignment="Center">Line</TextBlock>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem Name="Ellipse">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="images/ellipse.png" Width="22" Margin="0 0 5 0"/>
+                            <TextBlock VerticalAlignment="Center">Ellipse</TextBlock>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem Name="Rectangle">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="images/rectangle.png" Width="22" Margin="0 0 5 0"/>
+                            <TextBlock VerticalAlignment="Center">Rectangle</TextBlock>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem Name="Triangle">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="images/triangle.png" Width="22" Margin="0 0 5 0"/>
+                            <TextBlock VerticalAlignment="Center">Triangle</TextBlock>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    
+                </ComboBox>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="0"
+                Grid.Row="2"
+                Grid.RowSpan="1"
+                Background="#FFB9EAF0">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center">
+                <TextBlock VerticalAlignment="Center"
+                           Margin="0 0 20 0">
+                    Начертание
+                </TextBlock>
+                <ComboBox x:Name="box" Width="55" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
+                    <ComboBoxItem Name="Solid">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="images/diagonal-line.png" Width="22" Margin="0 0 5 0"/>
+                            <TextBlock VerticalAlignment="Center">Solid</TextBlock>
+                        </StackPanel>
+                    </ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="1" 
+                Grid.Row="1" 
+                Grid.RowSpan="2"
+                Background="#FFB9EAF0">
+            <CheckBox Content="Заливка" Name="checkBoxFill"
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center"/>
+        </Border>
+
+        <!--Цвет и толщина-->
+        <Border Grid.Column="2" 
+                Grid.Row="1" 
+                Grid.RowSpan="2"
+                Background="#FFB9EAF0" Grid.ColumnSpan="2">
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        Margin="0 0 0 0">
+                <Label>Выбор цвета</Label>
+                <xctk:ColorPicker x:Name="myColorPicker" Width="50" SelectedColorChanged="clrPicker_SelectedColorChanged" Background="White"/>
+                <Label>Выбор толщины</Label>
+                <ComboBox x:Name="SelectThickNess"
+                          VerticalContentAlignment="Center"
+                          SelectionChanged="SelectThickNess_SelectionChanged" SelectedIndex="0">
+                    <ComboBoxItem IsSelected="True"
+                                  Height="20"
+                                  VerticalContentAlignment="Center">
+                        <Rectangle Stroke="Black" 
+                                   StrokeThickness="1" 
+                                   Width="80" 
+                                   Height="2" 
+                                   Fill="Black"></Rectangle>
+                    </ComboBoxItem>
+                    <ComboBoxItem Height="20"
+                                  VerticalContentAlignment="Center">
+                        <Rectangle Stroke="Black" 
+                                   StrokeThickness="1" 
+                                   Width="80" 
+                                   Height="3" 
+                                   Fill="Black"></Rectangle>
+                    </ComboBoxItem>
+                    <ComboBoxItem Height="20"
+                                  VerticalContentAlignment="Center">
+                        <Rectangle Stroke="Black" 
+                                   StrokeThickness="1" 
+                                   Width="80" 
+                                   Height="4" 
+                                   Fill="Black"></Rectangle>
+                    </ComboBoxItem>
+                </ComboBox>
+
+                <ToggleButton x:Name="btnEraser" Margin="20 0 0 0" Height="30" Width="100" Click="btnEraser_Click">
+                    <DockPanel>
+                        <Image Margin="10 0" Height="20" Source="http://icons.iconarchive.com/icons/fatcow/farm-fresh/16/draw-eraser-icon.png"/>
+                        <TextBlock VerticalAlignment="Center">
+                            Eraser
+                        </TextBlock>
+                    </DockPanel>
+                </ToggleButton>
+            </StackPanel>
+        </Border>
+
+
+        <!--Поле для рисования-->
+        <!--<Border Grid.Column="0" Grid.Row="2" Grid.RowSpan="2" BorderBrush="Gray" BorderThickness="1">
+            <wpf:OpenGLControl OpenGLDraw="OpenGLControl_OpenGLDraw"
+                               OpenGLInitialized="OpenGLControl_OpenGLInitialized"
+                               Resized="OpenGLControl_Resized"
+                               SizeChanged="OpenGLControl_SizeChanged"
+                               MouseDown="OpenGLControl_MouseDown"
+                               MouseMove="OpenGLControl_MouseMove"
+                               MouseUp="OpenGLControl_MouseUp"/>
+        </Border>-->
+
+        <DockPanel Grid.Row="3" Grid.ColumnSpan="4">
+            <InkCanvas Name="inkPanel" MouseUp="inkPanel_MouseUp" PreviewMouseDown="inkPanel_PreviewMouseDown" MouseMove="inkPanel_MouseMove"/>
+        </DockPanel>
+
+        <!--<Canvas Name="mainCanvas" 
+                MouseDown="mainCanvas_MouseDown" 
+                MouseMove="mainCanvas_MouseMove"
+                Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="2">
+            -->
+        <!--<Canvas.CacheMode>
+                <BitmapCache 
+                    EnableClearType="False" 
+                    SnapsToDevicePixels="False"
+                    RenderAtScale="2"/>
+            </Canvas.CacheMode>-->
+        <!--
+        </Canvas>-->
+    </Grid>
+</Window>
