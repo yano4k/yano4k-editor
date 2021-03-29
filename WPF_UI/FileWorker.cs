@@ -83,7 +83,7 @@ namespace WPF_UI
 
         public override string ShapeToFormat(Shape shape)
         {
-            Line line = new Line();
+            Line line = (Line)shape;
             if (Format == "SVG")
             {
                 XElement svgLine = new XElement("line");
@@ -162,7 +162,7 @@ namespace WPF_UI
 
         public override string ShapeToFormat(Shape shape)
         {
-            Ellipse ellipse = new Ellipse();
+            Ellipse ellipse = (Ellipse)shape;
             if (Format == "SVG")
             {
                 double radiusX = ellipse.Width / 2;
