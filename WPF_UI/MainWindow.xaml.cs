@@ -43,7 +43,7 @@ namespace WPF_UI
         {
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog()
             {
-                Filter = "SVG (*.svg)|*.svg|VGF (*.vgf)|*.vgf",
+                Filter = "SVG (*.svg)|*.svg|VGF (*.vgf)|*.vgf|JSON (*.json)|*.json",
                 DefaultExt = "svg"
             };
             var DialougeResult = dialog.ShowDialog();
@@ -57,6 +57,9 @@ namespace WPF_UI
                     break;
                 case ".vgf":
                     worker = new VGFWorker(inkPanel, dialog.FileName);
+                    break;
+                case ".json":
+                    worker = new JSONWorker(inkPanel, dialog.FileName);
                     break;
                 default:
                     worker = null;
@@ -72,7 +75,7 @@ namespace WPF_UI
         {
             Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog()
             {
-                Filter = "SVG (*.svg)|*.svg|PNG (*.png)|*.png|VGF (*.vgf)|*.vgf",
+                Filter = "SVG (*.svg)|*.svg|PNG (*.png)|*.png|VGF (*.vgf)|*.vgf|JSON (*.json)|*.json",
                 FileName = "picture",
                 DefaultExt = "svg"
             };
@@ -90,6 +93,9 @@ namespace WPF_UI
                     break;
                 case ".vgf":
                     worker = new VGFWorker(inkPanel, dialog.FileName);
+                    break;
+                case ".json":
+                    worker = new JSONWorker(inkPanel, dialog.FileName);
                     break;
                 default:
                     worker = null;

@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 
 namespace WPF_UI
 {
@@ -82,7 +83,7 @@ namespace WPF_UI
 
         public override string ShapeToFormat(Shape shape)
         {
-            Line line = (Line)shape;
+            Line line = new Line();
             if (Format == "SVG")
             {
                 XElement svgLine = new XElement("line");
@@ -103,6 +104,16 @@ namespace WPF_UI
                 string stroke = line.Stroke.ToString();
                 double thikness = line.StrokeThickness;
                 return $"Line {X1} {Y1} {X2} {Y2} {stroke} {thikness};";
+            }
+            if (Format == "JSON")
+            {
+                string X1 = dobuleToString((line).X1);
+                string Y1 = dobuleToString((line).Y1);
+                string X2 = dobuleToString((line).X2);
+                string Y2 = dobuleToString((line).Y2);
+                string stroke = brushToString((line).Stroke);
+                string thikness = (line).StrokeThickness.ToString();
+                return $"{{\"type\":\"line\",\"x1\":{X1},\"y1\":{Y1},\"x2\":{X2},\"y2\":{Y2},\"stroke\":\"{stroke}\",\"stroke-width\":{thikness}}}";
             }
             return "";
         }
@@ -151,7 +162,7 @@ namespace WPF_UI
 
         public override string ShapeToFormat(Shape shape)
         {
-            Ellipse ellipse = (Ellipse)shape;
+            Ellipse ellipse = new Ellipse();
             if (Format == "SVG")
             {
                 double radiusX = ellipse.Width / 2;
@@ -176,6 +187,20 @@ namespace WPF_UI
                 double thikness = ellipse.StrokeThickness;
                 string fill = ellipse.Fill == null ? "noFill" : ellipse.Fill.ToString();
                 return $"Ellipse {left} {top} {width} {height} {stroke} {thikness} {fill};";
+            }
+            if (Format == "JSON")
+            {
+                double radiusX = (ellipse).Width / 2;
+                double radiusY = (ellipse).Height / 2;
+                string CX = dobuleToString(InkCanvas.GetLeft(ellipse) + radiusX);
+                string CY = dobuleToString(InkCanvas.GetTop(ellipse) + radiusY);
+                string RX = dobuleToString(radiusX);
+                string RY = dobuleToString(radiusY);
+                string stroke = brushToString((ellipse).Stroke);
+                string thikness = (ellipse).StrokeThickness.ToString();
+                string fill = (ellipse).Fill == null ? "none" : brushToString((ellipse).Fill);
+                return $"{{\"type\":\"ellipse\", \"cx\":{CX},\"cy\":{CY},\"rx\":{RX},\"ry\":{RY},\" fill\":{fill},\"stroke\":\"{stroke}\",\"stroke-width\":{thikness}}}";
+               
             }
             return "";
         }
@@ -244,6 +269,17 @@ namespace WPF_UI
                 string fill = rect.Fill == null ? "noFill" : rect.Fill.ToString();
                 return $"Rectangle {left} {top} {width} {height} {stroke} {thikness} {fill};";
             }
+            if (Format == "JSON")
+            {
+                string X = dobuleToString(InkCanvas.GetLeft(rect));
+                string Y = dobuleToString(InkCanvas.GetTop(rect));
+                string W = dobuleToString(rect.Width);
+                string H = dobuleToString((rect).Height);
+                string stroke = brushToString((rect).Stroke);
+                string thikness = (rect).StrokeThickness.ToString();
+                string fill = (rect).Fill == null ? "none" : brushToString((rect).Fill);
+                return $"{{\"type\":\"rect\", \"x\":{X},\"y\":{Y},\"width\":{W},\"height\":{H},\"stroke\":\"{stroke}\", \"fill\":{fill},\"stroke-width\":{thikness}}}";
+            }
             return "";
         }
         public override Shape FormatToShape(ConvertTarget Target)
@@ -303,6 +339,15 @@ namespace WPF_UI
                 string thikness = poly.StrokeThickness.ToString();
                 string fill = poly.Fill == null ? "noFill" : poly.Fill.ToString();
                 return $"Polygon {poly.Points.Count} {points} {stroke} {thikness} {fill};";
+            }
+            if (Format == "JSON")
+            {
+                var points = string.Join(" ", poly.Points.Select(point => $"{dobuleToString(point.X)},{dobuleToString(point.Y)}").ToArray());
+                string stroke = brushToString(poly.Stroke);
+                string thikness = poly.StrokeThickness.ToString();
+                string fill = poly.Fill == null ? "none" : brushToString(poly.Fill);
+                return $"{{\"type\":\"polygon\",\"points\":\"{points}\",\"stroke\":\"{stroke}\", \"fill\":\"{fill}\",\"stroke-width\":\"{thikness}\"}},";
+               
             }
             return "";
         }
@@ -376,7 +421,7 @@ namespace WPF_UI
                     case "Polygon": { converter = new PolygonConverter(Format); break; }
                     default: { converter = null; break; }
                 }
-                if (converter != null) formatData += converter.ShapeToFormat(shape);
+                if (converter != null) formatData += "shape : " + converter.ShapeToFormat(shape);
             }
             return formatData;
         }
@@ -513,6 +558,24 @@ namespace WPF_UI
         public override void Load()
         {
             //не нужен
+        }
+    }
+
+    class JSONWorker : FormatWorker
+    {
+        public JSONWorker(InkCanvas canvas, string path) : base(canvas, path)
+        {
+            Format = "JSON";
+        }
+
+        public override void Save()
+        {
+            string jsonData = $"{{\"height\":{(int)Canvas.ActualHeight},\"width\":{(int)Canvas.ActualWidth},";
+            File.WriteAllText(Path, jsonData + ProcessCanvas() + "}");
+        }
+        public override void Load()
+        {
+            //нету
         }
     }
 }
